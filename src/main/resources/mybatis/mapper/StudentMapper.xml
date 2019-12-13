@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.test.db.dao.StudentMapper">
+	<resultMap id="StudentMap" type="com.test.db.model.entity.Student">
+		<!-- 主键 -->
+		<result column="id" property="id" jdbcType="INTEGER" />
+		<!-- 名字 -->
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<!-- 性别 -->
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 取得studentList -->
+	<select  id="getStudentList" parameterType="com.test.db.model.entity.Student" resultMap="StudentMap" >
+		SELECT
+			-- 主键
+			T1.id,
+			-- 名字
+			T1.name,
+			-- 性别
+			T1.sex
+		<!-- student -->
+		FROM student T1
+		WHERE 1=1
+			<!-- 主键 -->
+			<if test="id != null and id > 0">
+				AND T1.id = #{id, jdbcType=INTEGER}
+			</if>
+			<!-- 名字 -->
+			<if test="name != null and name !=''">
+				AND T1.name = #{name, jdbcType=VARCHAR}
+			</if>
+			<!-- 性别 -->
+			<if test="sex != null and sex !=''">
+				AND T1.sex = #{sex, jdbcType=VARCHAR}
+			</if>
+	</select>
+
+	<!-- 取得student -->
+	<select  id="getStudent" parameterType="com.test.db.model.entity.Student" resultMap="StudentMap" >
+		SELECT
+			-- 主键
+			T1.id,
+			-- 名字
+			T1.name,
+			-- 性别
+			T1.sex
+		<!-- student -->
+		FROM student T1
+		WHERE 1=1
+		-- 主键
+		AND T1.id = #{id, jdbcType=INTEGER}
+	</select>
+
+	<!-- 添加student -->
+	<insert  id="insertStudent" parameterType="com.test.db.model.entity.Student">
+		<!-- student -->
+		INSERT INTO student
+		(
+			-- 主键
+			id,
+			-- 名字
+			name,
+			-- 性别
+			sex
+		) VALUES (
+			-- 主键
+			#{id, jdbcType=INTEGER},
+			-- 名字
+			#{name, jdbcType=VARCHAR},
+			-- 性别
+			#{sex, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 更新student -->
+	<update  id="updateStudent" parameterType="com.test.db.model.entity.Student">
+		<!-- student -->
+		UPDATE student
+		<set>
+				id = #{id, jdbcType=INTEGER}
+			-- 名字
+				,name = #{name, jdbcType=VARCHAR}
+			-- 性别
+				,sex = #{sex, jdbcType=VARCHAR}
+		</set>
+		WHERE 1=1
+		-- 主键
+		AND id = #{id, jdbcType=INTEGER}
+	</update>
+
+	<!-- 更新studentByValue -->
+	<update  id="updateStudentByValue" parameterType="com.test.db.model.entity.Student">
+		<!-- student -->
+		UPDATE student
+		<trim prefix="set" prefixOverrides=",">
+				id = #{id, jdbcType=INTEGER}
+			<!-- 名字 -->
+			<if test="name != null and name !=''">
+				,name = #{name, jdbcType=VARCHAR}
+			</if>
+			<!-- 性别 -->
+			<if test="sex != null and sex !=''">
+				,sex = #{sex, jdbcType=VARCHAR}
+			</if>
+		</trim>
+		WHERE 1=1
+		-- 主键
+		AND id = #{id, jdbcType=INTEGER}
+	</update>
+
+	<!-- 删除student -->
+	<delete  id="deleteStudent" parameterType="com.test.db.model.entity.Student">
+		<!-- student -->
+		DELETE FROM student
+		WHERE 1=1
+		-- 主键
+		AND id = #{id, jdbcType=INTEGER}
+	</delete>
+
+</mapper>
